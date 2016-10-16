@@ -10,5 +10,8 @@
 	<classpathentry kind="lib" path="/home/gael/workspace/commons-lang3-3.3.2/commons-lang3-3.3.2.jar"/>
 	<classpathentry kind="lib" path="/home/gael/workspace/commons-io-2.4/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="/home/gael/workspace/Shell.jar"/>
+	<classpathentry kind="lib" path="/home/gael/workspace/apache-jena-2.13.0/lib/jackson-annotations-2.3.0.jar"/>
+	<classpathentry kind="lib" path="/home/gael/workspace/apache-jena-2.13.0/lib/jackson-core-2.3.3.jar"/>
+	<classpathentry kind="lib" path="/home/gael/workspace/apache-jena-2.13.0/lib/jackson-databind-2.3.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

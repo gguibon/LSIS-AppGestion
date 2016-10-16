@@ -8,15 +8,34 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Properties;
+import java.util.List;
 import java.util.prefs.Preferences;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
+import cnrs.lsis.appgestion.model.Person;
+import cnrs.lsis.appgestion.model.PersonListWrapper;
+import cnrs.lsis.appgestion.model.SendMailTLS;
+import cnrs.lsis.appgestion.model.User;
+import cnrs.lsis.appgestion.util.OsValidator;
+import cnrs.lsis.appgestion.utils.Tools;
+import cnrs.lsis.appgestion.view.ContractStatisticsController;
+import cnrs.lsis.appgestion.view.EmailSettingsController;
+import cnrs.lsis.appgestion.view.MonthStatisticsController;
+import cnrs.lsis.appgestion.view.PersonEditDialogController;
+import cnrs.lsis.appgestion.view.PersonHistoryController;
+import cnrs.lsis.appgestion.view.PersonOverviewController;
+import cnrs.lsis.appgestion.view.RootLayoutController;
+import cnrs.lsis.appgestion.view.StatusStatisticsController;
+import cnrs.lsis.appgestion.view.SupervisorStatisticsController;
+import cnrs.lsis.appgestion.view.TeamStatisticsController;
+import eu.hansolo.enzo.notification.Notification.Notifier;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ObservableStringValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -28,35 +47,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
-import cnrs.lsis.appgestion.model.Email;
-import cnrs.lsis.appgestion.model.EmailWrapper;
-import cnrs.lsis.appgestion.model.Person;
-import cnrs.lsis.appgestion.model.PersonListWrapper;
-import cnrs.lsis.appgestion.model.SendMailTLS;
-import cnrs.lsis.appgestion.util.OsValidator;
-import cnrs.lsis.appgestion.utils.Tools;
-import cnrs.lsis.appgestion.view.ContractStatisticsController;
-import cnrs.lsis.appgestion.view.EmailSettingsController;
-import cnrs.lsis.appgestion.view.MonthStatisticsController;
-import cnrs.lsis.appgestion.view.PersonEditDialogController;
-import cnrs.lsis.appgestion.view.PersonOverviewController;
-import cnrs.lsis.appgestion.view.RootLayoutController;
-import cnrs.lsis.appgestion.view.StatusStatisticsController;
-import cnrs.lsis.appgestion.view.SupervisorStatisticsController;
-import cnrs.lsis.appgestion.view.TeamStatisticsController;
-import eu.hansolo.enzo.notification.Notification.Notifier;
 
 public class MainApp extends Application {
 
@@ -68,14 +58,7 @@ public class MainApp extends Application {
      */
     private ObservableList<Person> personData = FXCollections.observableArrayList();
     
-    /**
-     * The data as an observable list of Emails.
-     */
-    private ObservableList<Email> emailData = FXCollections.observableArrayList();
-    
     private String mail = "";
-    
-    private Email mailConf ;
 
     /**
      * Constructor
@@ -182,6 +165,45 @@ public class MainApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * Shows the person overview inside the root layout.
+     */
+    public void showPersonHistory(List<User> users) {
+    	try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/PersonHistory.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Person History");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the person into the controller.
+            PersonHistoryController controller = loader.getController();
+            controller.setHistories(users);
+            controller.setDialogStage(dialogStage);
+//            controller.setPerson(person);
+            
+            // Set the dialog icon.
+            Image img = new Image(MainApp.class.getResourceAsStream("/resources/images/edit.png"));
+            dialogStage.getIcons().add(img);
+//            dialogStage.getIcons().add(new Image("file:///resources/images/edit.png"));
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        
     }
     
     /**
@@ -641,8 +663,8 @@ public class MainApp extends Application {
             	//Notify two months before departure
             	if((actualDate >= exitDate-60)&&(actualDate <= exitDate)){
             		Toolkit.getDefaultToolkit().beep();
-            		sb.append(String.format("%s %s will leave at %s !\n", pers.getLastName(), pers.getFirstName(), pers.getExitDate()));
-            		Notifier.INSTANCE.notifyWarning("Attention !", String.format("%s %s will leave at %s !\n", pers.getLastName(), pers.getFirstName(), pers.getExitDate()));
+            		sb.append(String.format("%s %s (team: %s, supervisor: %s) will leave at %s !\n", pers.getLastName(), pers.getFirstName(), pers.getTeam(), pers.getPostalCode(), pers.getExitDate()));
+            		Notifier.INSTANCE.notifyWarning("Attention !", String.format("%s %s (team: %s, supervisor: %s) will leave at %s !\n", pers.getLastName(), pers.getFirstName(), pers.getTeam(), pers.getPostalCode(), pers.getExitDate()));
             	}
             }
 

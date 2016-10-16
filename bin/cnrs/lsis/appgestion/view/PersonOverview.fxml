@@ -7,14 +7,14 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 
-<AnchorPane prefHeight="363.0" prefWidth="693.0" stylesheets="@DarkTheme.css"
+<AnchorPane prefHeight="363.0" prefWidth="693.0" stylesheets="@LightTheme.css"
 	xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="cnrs.lsis.appgestion.view.PersonOverviewController">
 	<children>
-		<SplitPane dividerPositions="0.70" layoutX="153.0"
-			layoutY="70.0" prefHeight="300.0" prefWidth="600.0"
-			AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		<SplitPane dividerPositions="0.70" layoutX="153.0" layoutY="70.0"
+			prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0"
+			AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+			AnchorPane.topAnchor="0.0">
 			<items>
 				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0"
 					prefWidth="100.0">
@@ -46,13 +46,13 @@
 									text="Exit Date" />
 							</columns>
 							<columnResizePolicy>
-								<TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+								<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
 							</columnResizePolicy>
 						</TableView>
 					</children>
 				</AnchorPane>
 				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0"
-					prefWidth="100.0" styleClass="background" >
+					prefWidth="100.0" styleClass="background">
 					<children>
 						<Label layoutX="104.0" layoutY="51.0" styleClass="label-header"
 							text="Person Details" AnchorPane.leftAnchor="5.0"
@@ -93,11 +93,11 @@
 								<Label text="Entrance Date" GridPane.rowIndex="14" />
 								<Label text="Exit Date" GridPane.rowIndex="15" />
 								<Label text="Doctoral School" GridPane.rowIndex="16" />
-								<!-- <Label text="Email" GridPane.rowIndex="17" /> -->
-								
-								
-								<ImageView fx:id="photo" fitHeight="100.0"
-									fitWidth="150.0" layoutX="61.0" layoutY="83.0" pickOnBounds="true"
+								<Label text="Previous Status" GridPane.rowIndex="17" />
+
+
+								<ImageView fx:id="photo" fitHeight="100.0" fitWidth="150.0"
+									layoutX="61.0" layoutY="83.0" pickOnBounds="true"
 									preserveRatio="true" GridPane.columnIndex="1">
 									<image>
 										<Image
@@ -112,12 +112,12 @@
 									text="Label" GridPane.columnIndex="1" GridPane.rowIndex="8" />
 								<Label fx:id="desktopLabel" styleClass="label-bright"
 									text="Label" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-								<Label fx:id="statusLabel" styleClass="label-bright"
-									text="Label" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+								<Label fx:id="statusLabel" styleClass="label-bright" text="Label"
+									GridPane.columnIndex="1" GridPane.rowIndex="10" />
 								<Label fx:id="postalCodeLabel" styleClass="label-bright"
 									text="Label" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-								<Label fx:id="teamLabel" styleClass="label-bright"
-									text="Label" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+								<Label fx:id="teamLabel" styleClass="label-bright" text="Label"
+									GridPane.columnIndex="1" GridPane.rowIndex="12" />
 								<Label fx:id="cityLabel" styleClass="label-bright" text="Label"
 									GridPane.columnIndex="1" GridPane.rowIndex="13" />
 								<Label fx:id="entranceLabel" styleClass="label-bright"
@@ -126,20 +126,25 @@
 									GridPane.columnIndex="1" GridPane.rowIndex="15" />
 								<Label fx:id="streetLabel" styleClass="label-bright" text="Label"
 									GridPane.columnIndex="1" GridPane.rowIndex="16" />
-								<!-- <Label fx:id="emailLabel" styleClass="label-bright"
-									text="Label" GridPane.columnIndex="1" GridPane.rowIndex="17" /> -->
+								<Label fx:id="previousStatusLabel" styleClass="label-bright"
+									text="Label" GridPane.columnIndex="1" GridPane.rowIndex="17" />
+								<Button fx:id="viewHistoryBtn" mnemonicParsing="false" onAction="#handleViewHistory"
+									text="View History" GridPane.columnIndex="1" GridPane.rowIndex="22" />
 							</children>
 						</GridPane>
 						<ButtonBar layoutX="54.0" layoutY="250.0"
 							AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
 							<buttons>
-								<Button mnemonicParsing="false" onAction="#handleNewPerson"
-									text="New..." />
-								<Button mnemonicParsing="false" onAction="#handleEditPerson"
-									text="Edit..." />
-								<Button minWidth="66.0" mnemonicParsing="false"
-									onAction="#handleDeletePerson" prefHeight="33.0" prefWidth="120.0"
-									text="Delete" />
+								<Button fx:id="newBtn" mnemonicParsing="false" onAction="#handleNewPerson"
+									text="New" />
+								<Button defaultButton="true" fx:id="editBtn"
+									mnemonicParsing="true" onAction="#handleEditPerson" text="Edit">
+									<!-- <accelerator> <KeyCodeCombination alt="UP" code="N" control="DOWN" 
+										meta="UP" shift="UP" shortcut="UP" /> </accelerator> -->
+								</Button>
+								<Button fx:id="deleteBtn" minWidth="66.0"
+									mnemonicParsing="false" onAction="#handleDeletePerson"
+									prefHeight="33.0" prefWidth="120.0" text="Delete" />
 							</buttons>
 						</ButtonBar>
 					</children>

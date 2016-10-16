@@ -2,16 +2,13 @@ package cnrs.lsis.appgestion.model;
 
 import java.time.LocalDate;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import cnrs.lsis.appgestion.util.LocalDateAdapter;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * Model class for a Person.
@@ -33,6 +30,10 @@ public class Person {
     private final StringProperty status;
     private final StringProperty team;
     private final StringProperty email;
+    private final StringProperty history;
+    
+    
+    
 
     /**
      * Default constructor.
@@ -47,7 +48,8 @@ public class Person {
      * @param firstName
      * @param lastName
      */
-    public Person(String firstName, String lastName) {
+    public Person(String firstName, String lastName){
+    	
         this.firstName = new SimpleStringProperty(firstName);
         this.lastName = new SimpleStringProperty(lastName);
         
@@ -63,6 +65,8 @@ public class Person {
         this.status = new SimpleStringProperty("PhD / Engineer / etc");
         this.team = new SimpleStringProperty("Team A");
         this.email = new SimpleStringProperty("an.email@email.com");
+        this.history = new SimpleStringProperty("");
+        
         
     }
 
@@ -225,5 +229,13 @@ public class Person {
     public StringProperty emailProperty() {
         return email;
     }
+
+	public String getHistory() {
+		return history.get();
+	}
+	
+	public void setHistory(String history) {
+		this.history.set(history);
+	}
 
 }

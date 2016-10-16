@@ -10,9 +10,17 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Joiner;
 
 import cnrs.lsis.appgestion.MainApp;
 import cnrs.lsis.appgestion.model.Person;
+import cnrs.lsis.appgestion.model.User;
 import cnrs.lsis.appgestion.util.DateUtil;
 import eu.hansolo.enzo.notification.Notification;
 import eu.hansolo.enzo.notification.Notification.Notifier;
@@ -51,8 +59,8 @@ public class PersonEditDialogController {
     private TextField statusField;
     @FXML
     private TextField teamField;
-    @FXML
-    private TextField emailField;
+//    @FXML
+//    private TextField emailField;
     private String path ="";
 
     private Stage dialogStage;
@@ -170,7 +178,56 @@ public class PersonEditDialogController {
             person.setEntranceDate(DateUtil.parse(entranceField.getText()));
             person.setExitDate(DateUtil.parse(exitField.getText()));
             person.setDesktop(desktopField.getText());
-            person.setStatus(statusField.getText());
+            // Check if the status has changed and add a new history instance if it is the case
+            if(!person.getStatus().equals(statusField.getText())){
+            	person.setStatus(statusField.getText());
+            	try{
+	            	String history = person.getHistory();
+	            	if(history.isEmpty()){
+		                ObjectMapper mapper = new ObjectMapper();
+	            		User user = new User();
+		    			user.setFirstname(firstNameField.getText());
+		    			user.setLastname(lastNameField.getText());
+		    			user.setStatus(statusField.getText());
+		    			user.setTeam(teamField.getText());
+//		    			user.setEmail(emailField.getText());
+		    			user.setBirthday(birthdayField.getText());
+		    			user.setEntranceDate(entranceField.getText());
+		    			user.setExitDate(exitField.getText());
+		    			user.setDesktop(desktopField.getText());
+		    			user.setCity(cityField.getText());
+		    			user.setStreet(streetField.getText());
+		    			user.setPostalCode(postalCodeField.getText());
+		    			//Update a new listUserHistory to avoid concurrency exception
+		    			List<User> listUserHistory2 = new ArrayList<User>();
+		    			listUserHistory2.add(user);
+		    			//Object to JSON in String
+		    			String jsonInString = mapper.writeValueAsString(listUserHistory2);
+		    			// Add the new history json string into the person history
+		    			person.setHistory(jsonInString);
+	            	}else{
+		                ObjectMapper mapper = new ObjectMapper();
+		    			List<User> listUserHistory = Arrays.asList(mapper.readValue(history, User[].class));
+		    			User user = new User();
+		    			user.setFirstname(firstNameField.getText());
+		    			user.setLastname(lastNameField.getText());
+		    			user.setStatus(statusField.getText());
+		    			user.setTeam(teamField.getText());
+		    			//Update a new listUserHistory to avoid concurrency exception
+		    			List<User> listUserHistory2 = new ArrayList<User>();
+		    			listUserHistory2.add(user);
+		    			listUserHistory2.addAll(listUserHistory);
+		    			//Object to JSON in String
+		    			String jsonInString = mapper.writeValueAsString(listUserHistory2);
+		    			// Add the new history json string into the person history
+		    			person.setHistory(jsonInString);
+	            	}
+            	}catch(Exception e){
+            		e.printStackTrace();
+            	}
+            }else{
+            	person.setStatus(statusField.getText());
+            }
             person.setTeam(teamField.getText());
             //person.setEmail(emailField.getText());
 
@@ -273,4 +330,6 @@ public class PersonEditDialogController {
             return false;
         }
     }
+    
+    
 }
