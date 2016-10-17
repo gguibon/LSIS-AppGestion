@@ -3,7 +3,7 @@ LSIS-AppGestion
 
 A graphical interface that allows you to manage members of a team, see charts about their distribution per supervisors, entry date, etc. It allows you to obtain a trombinoscope of the members, and to filter your data.
 
-The actual version is 1.8.0.
+The actual version is 1.9.0.
 
 It is a evolution of [this tutorial from code.makery](http://code.makery.ch/library/javafx-8-tutorial/ "code.makery tutorial") with several additionnal features:
 - edit photo
@@ -11,6 +11,7 @@ It is a evolution of [this tutorial from code.makery](http://code.makery.ch/libr
 - trombinoscope
 - additionnal charts
 - additionnal filter
+- see history of changes
 - etc.
 
 It was initially made for the [LSIS research laboratory](http://www.lsis.org/ "lsis home page").
@@ -24,7 +25,7 @@ The tutorial (link above) shows you an easy way to build its the "deployment" se
 # Usage
 
 There are two executable files in the root directory:
-- LsisAppGestion-1.8.jar --> java executable file
+- LsisAppGestion-1.9.0.jar --> java executable file
 - LsisAppGestion.dmg --> MAC installation image
 
 Double click on Jar or type :
